@@ -1,0 +1,7 @@
+/target/
+.asm.json
+.asm/
+.env*
+!.env.example
+*.log
+.DS_Store

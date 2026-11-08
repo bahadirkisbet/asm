@@ -1,0 +1,3 @@
+[mcp_servers.asm]
+command = "/absolute/path/to/asm"
+args = ["--config", "/absolute/path/to/operations.json", "mcp"]

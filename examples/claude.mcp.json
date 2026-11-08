@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "asm": {
+      "type": "stdio",
+      "command": "/absolute/path/to/asm",
+      "args": ["--config", "/absolute/path/to/operations.json", "mcp"]
+    }
+  }
+}

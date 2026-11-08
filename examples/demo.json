@@ -1,0 +1,26 @@
+{
+  "namespace": "asm-demo",
+  "secrets": {
+    "session-key": { "description": "Locally generated demo session key" }
+  },
+  "operations": {
+    "generate-session-key": {
+      "kind": "generate",
+      "secret": "session-key",
+      "bytes": 32
+    },
+    "check-session-key": {
+      "kind": "deliver",
+      "secret": "session-key",
+      "destination": {
+        "kind": "command",
+        "variable": "ASM_SESSION_KEY",
+        "command": {
+          "program": "/bin/sh",
+          "cwd": "/tmp",
+          "args": ["-c", "test \"${#ASM_SESSION_KEY}\" -eq 43"]
+        }
+      }
+    }
+  }
+}
