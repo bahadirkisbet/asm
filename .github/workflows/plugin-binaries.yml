@@ -1,0 +1,55 @@
+name: plugin-binaries
+on: workflow_dispatch
+permissions:
+  contents: read
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - runner: ubuntu-22.04
+            artifact: Linux-x86_64
+          - runner: macos-15
+            artifact: Darwin-arm64
+          - runner: macos-15-intel
+            artifact: Darwin-x86_64
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dtolnay/rust-toolchain@stable
+      - if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libdbus-1-dev pkg-config
+      - run: cargo test --locked
+      - run: cargo build --release --locked
+      - name: Test release binary through MCP
+        run: |
+          python3 - <<'PY'
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, 'tests')
+          import e2e
+          e2e.BINARY = Path('target/release/asm').resolve()
+          e2e.run(skip_browser=True)
+          PY
+      - name: Stage binary with build provenance
+        env:
+          ASM_ARTIFACT: ${{ matrix.artifact }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, platform, shutil, subprocess
+          from pathlib import Path
+          name = os.environ['ASM_ARTIFACT']
+          assert name == platform.system() + '-' + platform.machine()
+          out = Path('dist')
+          out.mkdir()
+          binary = out / ('asm-' + name)
+          shutil.copyfile('target/release/asm', binary)
+          version = subprocess.check_output(['target/release/asm', '--version'], text=True).strip()
+          (out / (name + '.json')).write_text(json.dumps({'file': binary.name, 'sha256': hashlib.sha256(binary.read_bytes()).hexdigest(), 'source_commit': os.environ['GITHUB_SHA'], 'version': version}) + '\n')
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: asm-${{ matrix.artifact }}
+          path: dist/*
+          retention-days: 14
