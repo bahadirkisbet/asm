@@ -147,6 +147,8 @@ fn command_failure_output_and_timeout_never_escape() {
     );
     assert!(start.elapsed().as_secs() < 3);
     spec.args[1] = "head -c 1048577 /dev/zero".into();
+    // Exercise the size limit independently of timer granularity on CI hosts.
+    spec.timeout_seconds = 10;
     assert_eq!(
         process::run(&spec, &BTreeMap::new()).err(),
         Some(Error("capture_too_large"))
