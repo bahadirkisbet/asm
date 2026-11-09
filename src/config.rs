@@ -19,6 +19,8 @@ pub struct Config {
 #[serde(deny_unknown_fields)]
 pub struct SecretDefinition {
     pub description: String,
+    #[serde(default)]
+    pub environment: Option<String>,
 }
 
 #[derive(Clone, Deserialize)]
@@ -191,6 +193,13 @@ impl Config {
         for (name, definition) in &self.secrets {
             if !valid_name(name) || definition.description.len() > 1024 {
                 return Err(Error("invalid_config"));
+            }
+            if definition
+                .environment
+                .as_deref()
+                .is_some_and(|s| !valid_name(s))
+            {
+                return Err(Error("invalid_secret_environment"));
             }
         }
         for (name, op) in &self.operations {

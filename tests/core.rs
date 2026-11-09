@@ -92,6 +92,60 @@ fn generate_no_overwrite_delete_and_missing_secret() {
 }
 
 #[test]
+fn environment_metadata_preserves_legacy_storage_and_reference() {
+    let dir = tempfile::tempdir().unwrap();
+    let mut engine = engine(
+        json!({
+            "generate":{"kind":"generate","secret":"token","bytes":32},
+            "deliver":{"kind":"deliver","secret":"token","destination":{"kind":"file","path":"target"}}
+        }),
+        dir.path(),
+    );
+    let legacy = serde_json::to_value(engine.execute("generate").unwrap()).unwrap();
+    assert_eq!(legacy.get("environment"), Some(&Value::Null));
+    assert_eq!(
+        engine.catalog()["secrets"][0].get("environment"),
+        Some(&Value::Null)
+    );
+
+    engine.config.secrets.get_mut("token").unwrap().environment = Some("production".into());
+    let outcome = serde_json::to_value(engine.execute("deliver").unwrap()).unwrap();
+    assert_eq!(outcome["environment"], "production");
+    assert_eq!(outcome["secret_ref"], legacy["secret_ref"]);
+    assert_eq!(std::fs::read(dir.path().join("target")).unwrap().len(), 43);
+    let catalog = engine.catalog();
+    assert_eq!(catalog["secrets"][0]["environment"], "production");
+    for operation in catalog["operations"].as_array().unwrap() {
+        assert_eq!(operation["environment"], "production");
+    }
+}
+
+#[test]
+fn environment_metadata_validates_without_guessing_or_echoing() {
+    for label in [
+        json!(null),
+        json!("development"),
+        json!("staging"),
+        json!("production"),
+        json!("preview/pr-42"),
+    ] {
+        let parsed: Config = serde_json::from_value(json!({"namespace":"prod-name-is-not-default", "secrets":{"token":{"description":"test", "environment":label}}, "operations":{}})).unwrap();
+        parsed.validate().unwrap();
+        assert_eq!(
+            serde_json::to_value(&parsed.secrets["token"]).unwrap()["environment"],
+            label
+        );
+    }
+    for label in ["", " production", "secret\nvalue", &"a".repeat(129)] {
+        let mut config = config(json!({}));
+        config.secrets.get_mut("token").unwrap().environment = Some(label.into());
+        assert_eq!(config.validate(), Err(Error("invalid_secret_environment")));
+    }
+    let invalid_type = json!({"namespace":"test", "secrets":{"token":{"description":"test", "environment":42}}, "operations":{}});
+    assert!(serde_json::from_value::<Config>(invalid_type).is_err());
+}
+
+#[test]
 fn validation_fails_closed() {
     assert!(validate_url("http://example.com", true).is_err());
     assert!(validate_url("http://127.0.0.1:1234", false).is_err());

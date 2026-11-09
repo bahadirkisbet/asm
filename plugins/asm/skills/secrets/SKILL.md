@@ -3,9 +3,16 @@ name: secrets
 description: Use ASM to capture, generate or deliver credentials during authorized setup without copying plaintext secrets into chat. Use for ASM catalog questions and secret-handling steps; not for general security advice.
 ---
 
-Use the plugin's `asm_catalog` tool to discover secret references, descriptions
+Use the plugin's `asm_catalog` tool to discover secret references, descriptions, environments
 and named operations. `asm_execute` accepts only an operation name. It returns a
 reference and status, or a safe error code; it never returns a credential value.
+
+Each secret has optional `environment` metadata such as `development`, `staging`
+or `production`. Catalog secrets/operations and successful outcomes include it.
+`null` means unspecified: never assume development or infer it from a name.
+Compare the configured label with the intended task; resolve ambiguity from
+trusted project context before use. The label does not isolate storage or enforce
+destination matching. Use distinct namespaces/names for distinct credentials.
 
 Before an operation, read its definition in the trusted operations configuration:
 `~/.config/asm/operations.json`, unless the user configured `ASM_CONFIG`. Check

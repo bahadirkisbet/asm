@@ -27,6 +27,7 @@ pub struct Engine {
 pub struct Outcome {
     pub operation: String,
     pub secret_ref: String,
+    pub environment: Option<String>,
     pub status: &'static str,
 }
 
@@ -56,8 +57,8 @@ impl Engine {
     }
     pub fn catalog(&self) -> Value {
         json!({"namespace":self.config.namespace, "storage": if self.persistent {"os_keyring"} else {"ephemeral"},
-            "secrets": self.config.secrets.iter().map(|(name, d)| json!({"ref":format!("asm://{}/{name}",self.config.namespace), "description": d.description})).collect::<Vec<_>>(),
-            "operations": self.config.operations.iter().map(|(name, op)| json!({"name":name,"secret_ref":format!("asm://{}/{}",self.config.namespace, op.secret())})).collect::<Vec<_>>()})
+            "secrets": self.config.secrets.iter().map(|(name, d)| json!({"ref":format!("asm://{}/{name}",self.config.namespace), "description": d.description, "environment": d.environment})).collect::<Vec<_>>(),
+            "operations": self.config.operations.iter().map(|(name, op)| json!({"name":name,"secret_ref":format!("asm://{}/{}",self.config.namespace, op.secret()), "environment": self.config.secrets[op.secret()].environment})).collect::<Vec<_>>()})
     }
     pub fn delete(&mut self, name: &str) -> Result<()> {
         if !self.config.secrets.contains_key(name) {
@@ -118,6 +119,7 @@ impl Engine {
         Ok(Outcome {
             operation: name.into(),
             secret_ref: format!("asm://{}/{}", self.config.namespace, op.secret()),
+            environment: self.config.secrets[op.secret()].environment.clone(),
             status,
         })
     }

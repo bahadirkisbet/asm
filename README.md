@@ -147,14 +147,14 @@ Agent instruction:
 
 Only two tools are exposed:
 
-- `asm_catalog()` returns configured descriptions, references, operation names,
+- `asm_catalog()` returns configured descriptions, references, environments, operation names,
   and storage mode. Configured does not mean the secret exists yet.
 - `asm_execute({"operation":"generate-session-key"})` performs a named operation.
 
 Successful example:
 
 ```json
-{"operation":"generate-session-key","secret_ref":"asm://asm-demo/session-key","status":"stored"}
+{"operation":"generate-session-key","secret_ref":"asm://asm-demo/session-key","environment":"development","status":"stored"}
 ```
 
 Failures are static codes, e.g. `{"error":"secret_not_found"}`, with MCP
@@ -173,7 +173,7 @@ stored credentials. Relative file paths resolve beside the configuration file.
 ```json
 {
   "namespace": "myapp-dev",
-  "secrets": {"api-token": {"description": "Development service token"}},
+  "secrets": {"api-token": {"description": "Development service token", "environment": "development"}},
   "operations": {
     "capture-issued-token": {
       "kind": "capture",
@@ -200,6 +200,20 @@ stored credentials. Relative file paths resolve beside the configuration file.
   }
 }
 ```
+
+Each secret may declare `environment`, for example `development`, `staging`,
+`production` or `preview/pr-42`. Labels are case-sensitive, 1–128 ASCII letters,
+digits, `_`, `-` or `/`. Invalid labels reject the config with a static error.
+Catalog secret entries, catalog operations and successful operation results
+include the configured label. An omitted field or explicit `null` is returned as
+`"environment": null` (unspecified); ASM never guesses an environment from a name.
+Existing configurations and stored credentials continue to work unchanged.
+
+This is metadata about the primary secret of an operation, not a storage partition
+or destination authorization rule. HTTP auth and child-process bindings may
+reference other secrets; check their catalog entries and the operation definition
+too. Changing a label does not move or rotate a credential. Use different
+namespaces or secret names for distinct environment credentials.
 
 Capture sources:
 

@@ -8,3 +8,11 @@
 - Local capture/delivery adapters reuse an OS credential store; building a new
   encrypted vault, hosted service or universal traffic interceptor is out of scope.
 - Same-user hostile-code isolation is not a first-version guarantee.
+
+## 2026-11-09 — secret environment visibility
+- The user wants the agent to know which environment a used secret belongs to.
+- Add per-secret environment metadata in catalogs and successful results; do not
+  infer environments from names or change existing credential storage identity.
+- Omitted labels remain explicitly unspecified for backward compatibility.
+- Storage partitioning and cross-environment authorization were not requested;
+  distinct credentials continue to use distinct namespaces or secret names.

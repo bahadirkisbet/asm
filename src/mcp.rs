@@ -29,7 +29,7 @@ impl Server {
 #[tool_router(server_handler)]
 impl Server {
     #[tool(
-        description = "List configured secret references, descriptions and operation names. Never returns secret values."
+        description = "List configured secret references, descriptions, environments and operation names. A null environment means unspecified, never inferred. Never returns secret values."
     )]
     async fn asm_catalog(&self) -> CallToolResult {
         match self.engine.lock() {
@@ -41,7 +41,7 @@ impl Server {
     }
 
     #[tool(
-        description = "Execute an authorized named local operation: capture, generate or deliver a secret. Only status and a secret reference are returned. Do not pass plaintext secrets. Side effects are defined in the trusted local config; consult that config before choosing an operation. A failure after an external side effect may require checking the provider before retrying."
+        description = "Execute an authorized named local operation: capture, generate or deliver a secret. Only status, a secret reference and configured environment metadata are returned. Do not pass plaintext secrets. Side effects are defined in the trusted local config; consult that config and the environment before choosing an operation. A failure after an external side effect may require checking the provider before retrying."
     )]
     async fn asm_execute(&self, Parameters(args): Parameters<Execute>) -> CallToolResult {
         let engine = self.engine.clone();

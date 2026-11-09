@@ -216,6 +216,8 @@ def run(skip_browser=False, keyring=False, cli_binary=None):
             capture("browser", {"kind": "browser", "page": page, "selector": "#token", "click": "#issue"})
             operations["browser-deliver"] = {"kind": "deliver", "secret": "browser", "destination": {"kind": "browser", "page": page, "selector": "#destination", "submit": "#submit", "success_selector": "#saved"}}
         config = {"namespace": "e2e-" + secrets.token_hex(8), "allow_http_loopback": True, "secrets": {op["secret"]: {"description": "Synthetic test credential"} for op in operations.values()}, "operations": operations}
+        for name, label in {"file":"development", "env":"production", "generated":"staging"}.items():
+            config["secrets"][name]["environment"] = label
         path = directory / "config.json"
         path.write_text(json.dumps(config))
         env = dict(os.environ, ASM_TEST_SOURCE=token)
@@ -227,9 +229,13 @@ def run(skip_browser=False, keyring=False, cli_binary=None):
                 assert {t["name"] for t in tools} == {"asm_catalog", "asm_execute"}
                 schema = next(t["inputSchema"] for t in tools if t["name"] == "asm_execute")
                 assert set(schema["properties"]) == {"operation"}, "Secret-bearing tool arguments exposed"
-                client.call("tools/call", {"name": "asm_catalog", "arguments": {}})
+                catalog = json.loads(client.call("tools/call", {"name": "asm_catalog", "arguments": {}})["content"][0]["text"])
+                expected = {"asm://" + config["namespace"] + "/" + name: definition.get("environment") for name, definition in config["secrets"].items()}
+                for entry in catalog["secrets"] + catalog["operations"]:
+                    assert entry["environment"] == expected[entry.get("ref", entry.get("secret_ref"))]
                 for operation in ["file", "env", "cli", "api", "generate", "file-deliver", "generated-deliver", "env-deliver", "api-deliver", "header-deliver"]:
-                    client.execute(operation)
+                    outcome = client.execute(operation)
+                    assert outcome["environment"] == expected[outcome["secret_ref"]]
                 assert (directory / "delivered").read_text() == token
                 assert (directory / "delivered").stat().st_mode & 0o777 == 0o600
                 generated = (directory / "generated").read_text()
@@ -253,6 +259,9 @@ def run(skip_browser=False, keyring=False, cli_binary=None):
         for args, expected in [(["check"], 0), (["catalog"], 0), (["--ephemeral", "execute", "cli-failure"], 1)]:
             result = subprocess.run([str(cli_binary), "--config", str(path), *args], env=env, capture_output=True, text=True, timeout=15)
             assert result.returncode == expected, "CLI exit status incorrect"
+            if args == ["catalog"]:
+                catalog = json.loads(result.stdout)
+                assert any(entry["environment"] == "production" for entry in catalog["secrets"])
             transcript.extend([result.stdout, result.stderr])
         if keyring:
             # Unique namespace; register cleanup before the first persistent write.

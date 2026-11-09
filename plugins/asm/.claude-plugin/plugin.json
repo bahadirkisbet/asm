@@ -1,6 +1,6 @@
 {
   "name": "asm",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Agentic Secret Manager: capture, generate and deliver secrets using references instead of plaintext tool responses.",
   "author": { "name": "Bahadir Kisbet", "url": "https://github.com/bahadirkisbet" },
   "repository": "https://github.com/bahadirkisbet/asm",
