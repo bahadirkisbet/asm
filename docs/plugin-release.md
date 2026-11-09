@@ -1,8 +1,8 @@
 # Releasing ASM through bardak
 
-The private `bahadirkisbet/asm` repository holds the package in `plugins/asm`.
+The public `bahadirkisbet/asm` repository holds the package in `plugins/asm`.
 The public `bahadirkisbet/bardak` marketplace contains only its catalog entry,
-using `git-subdir`, the standard SSH repository URL and a pinned commit. Never
+using `git-subdir`, the HTTPS repository URL and a pinned commit. Never
 copy ASM code/binaries into bardak. Never put user config, credentials, backups
 or caches in the plugin folder. The demo config and runnable synthetic examples
 are packaged alongside the logo; user-specific configuration is never copied.
@@ -22,10 +22,10 @@ are packaged alongside the logo; user-specific configuration is never copied.
    It copies the demo config, runnable examples and license into the self-contained plugin.
 4. Run repository checks, `python3 tests/plugin_e2e.py`,
    and `claude plugin validate plugins/asm`.
-5. Commit the private plugin package and check the pushed commit's CI. Then update
+5. Commit the plugin package and check the pushed commit's CI. Then update
    the ASM entry's version and commit pin in bardak, validate that marketplace
    with `claude plugin validate .`, and publish the catalog change.
-   Native binaries are deliberately tracked for offline startup/private Git
+   Native binaries are deliberately tracked for offline startup and Git
    distribution; Git history grows with binary updates.
 6. Test installing from the **Git URL** in each native client, inspect the loaded
    skill/MCP inventory, and verify catalog access from the installed cache.

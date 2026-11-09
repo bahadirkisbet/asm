@@ -151,9 +151,9 @@ also passed.
   warning. Codex's native `plugin/read` resolved both logo and composer icon from
   a temporary local marketplace; no installed plugins/configuration were changed
   by that parser check. See [branding provenance and prompt](branding.md).
-- At this checkpoint, the 0.1.3 package is prepared locally. Main/marketplace
-  publication and installed-client updates are pending clarification of the
-  concurrent public-repository change versus the earlier private-package request.
+- The user confirmed the public-repository change and explicitly authorized
+  pushing this release. Public HTTPS distribution follows ADR0004; no repository
+  visibility change is part of this release.
 
 ## Remaining limits
 
