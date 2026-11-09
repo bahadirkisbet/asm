@@ -1,6 +1,6 @@
 # 0003. Publish the catalog in bardak, keep the package private
 
-- Status: accepted
+- Status: superseded by [0004](0004-public-package.md)
 - Date: 2026-11-09
 
 ## Context
