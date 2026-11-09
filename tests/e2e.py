@@ -181,7 +181,8 @@ def browser(directory, url):
         assert proc.poll() is not None, "Chrome did not stop"
 
 
-def run(skip_browser=False, keyring=False):
+def run(skip_browser=False, keyring=False, cli_binary=None):
+    cli_binary = cli_binary or BINARY
     token = "asm-test-" + secrets.token_hex(24)
     transcript = []
     with tempfile.TemporaryDirectory(prefix="asm-e2e-") as directory, fixture_server(token) as (url, state), contextlib.ExitStack() as stack:
@@ -250,19 +251,19 @@ def run(skip_browser=False, keyring=False):
             print(f"PASS MCP {protocol}: capture, delivery, failures, no secret in output", flush=True)
 
         for args, expected in [(["check"], 0), (["catalog"], 0), (["--ephemeral", "execute", "cli-failure"], 1)]:
-            result = subprocess.run([str(BINARY), "--config", str(path), *args], env=env, capture_output=True, text=True, timeout=15)
+            result = subprocess.run([str(cli_binary), "--config", str(path), *args], env=env, capture_output=True, text=True, timeout=15)
             assert result.returncode == expected, "CLI exit status incorrect"
             transcript.extend([result.stdout, result.stderr])
         if keyring:
             # Unique namespace; register cleanup before the first persistent write.
             try:
                 for operation in ["file", "file-deliver"]:
-                    result = subprocess.run([str(BINARY), "--config", str(path), "execute", operation], capture_output=True, text=True, timeout=30)
+                    result = subprocess.run([str(cli_binary), "--config", str(path), "execute", operation], capture_output=True, text=True, timeout=30)
                     transcript.extend([result.stdout, result.stderr])
                     assert result.returncode == 0, "OS credential store roundtrip failed"
                 assert (directory / "delivered").read_text() == token
             finally:
-                cleanup = subprocess.run([str(BINARY), "--config", str(path), "delete", "file"], capture_output=True, text=True, timeout=30)
+                cleanup = subprocess.run([str(cli_binary), "--config", str(path), "delete", "file"], capture_output=True, text=True, timeout=30)
                 transcript.extend([cleanup.stdout, cleanup.stderr])
                 assert cleanup.returncode == 0, "OS credential cleanup failed"
             print("PASS OS credential store across CLI processes; test item removed", flush=True)

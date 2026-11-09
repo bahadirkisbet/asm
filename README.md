@@ -4,10 +4,67 @@ Let Claude Code and Codex complete authorized setup without asking a human to
 copy credentials into chat. ASM captures and delivers values locally. The agent
 receives references and status, never the captured data.
 
-**Early local release.** macOS and Linux, Rust 1.88+. This is an operation broker,
+**Early local release.** macOS and Linux. This is an operation broker,
 not a sandbox for hostile agents. Read [the security boundary](SECURITY.md).
 
 ## Install and try
+
+### GitHub marketplace (recommended)
+
+The private GitHub repository is also the **Bahadir Plugins** marketplace.
+Git access to `bahadirkisbet/asm` is required. The package contains native binaries
+for macOS Apple Silicon, macOS Intel, and Linux x86_64 (Ubuntu 22.04+). Runtime
+requirements: Python 3.9+; Linux also needs `libdbus-1-3` and an unlocked Secret
+Service. No Rust compiler or startup download is needed.
+
+Claude Code:
+
+```sh
+claude plugin marketplace add bahadirkisbet/asm
+claude plugin install asm@bahadir-plugins
+```
+
+Codex:
+
+```sh
+codex plugin marketplace add bahadirkisbet/asm
+codex plugin add asm@bahadir-plugins
+```
+
+Use an SSH URL instead of the repository shorthand if that's how your GitHub
+access is configured. On the owner's machine, for example, the authenticated
+personal alias is `git@personal:bahadirkisbet/asm.git`; other users should use
+their own Git authentication. The repository remains private.
+
+**Existing direct-MCP installation:** from this checkout, use the migration
+helper instead of the commands above:
+
+```sh
+python3 scripts/install_plugin.py --source git@personal:bahadirkisbet/asm.git
+```
+
+It installs into both clients, validates each installed binary/config, then
+removes only the known ASM legacy MCP definition. It preserves operations,
+credentials and unrelated settings, and makes private backups. Conflicting
+custom registrations and legacy ASM-specific user/current-project permission or
+hook rules stop migration. Plugin tool names differ from direct MCP names; review
+policies in other projects before using the plugin there. Use `--client claude` or `--client codex`
+for one client. The helper needs Python 3.11+; native marketplace commands do not.
+
+Restart sessions after installation. Ask for the ASM catalog or invoke the
+bundled `secrets` skill. First startup creates a demo operations config only if
+`~/.config/asm/operations.json` does not exist. Existing config is preserved.
+Set `ASM_CONFIG` in the client process environment for a custom config path.
+The plugin skill explains routing, reference semantics and safe error handling;
+it does not grant new provider permissions or intercept other tools.
+
+Update from the same Git source with the clients' native marketplace/plugin
+update commands. Both clients cache versioned packages; restart sessions after
+updates. Uninstall with `claude plugin uninstall asm@bahadir-plugins` or
+`codex plugin remove asm@bahadir-plugins`. User operations and OS credentials are
+outside the plugin cache and remain intact.
+
+### Source-based direct MCP installation
 
 From the cloned repository, one command builds ASM and registers it in **both
 Claude Code and Codex** for your user:
@@ -73,8 +130,8 @@ codex mcp add asm -- /absolute/path/to/asm --config /absolute/path/to/operations
 ```
 
 Alternatively adapt [Claude's MCP JSON](examples/claude.mcp.json) or
-[Codex's TOML entry](examples/codex.toml). These are ordinary stdio MCP tools;
-separate client-specific plugins are unnecessary for the first release.
+[Codex's TOML entry](examples/codex.toml). This is the direct-MCP alternative to
+the marketplace plugin above; do not keep both enabled for the same ASM config.
 Client tool permissions still apply. Pre-authorize only operations appropriate
 for the project using the client's settings; ASM does not disable those controls.
 

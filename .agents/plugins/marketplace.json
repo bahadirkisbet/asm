@@ -1,0 +1,12 @@
+{
+  "name": "bahadir-plugins",
+  "interface": { "displayName": "Bahadir Plugins" },
+  "plugins": [
+    {
+      "name": "asm",
+      "source": { "source": "local", "path": "./plugins/asm" },
+      "policy": { "installation": "AVAILABLE", "authentication": "ON_INSTALL" },
+      "category": "Developer Tools"
+    }
+  ]
+}

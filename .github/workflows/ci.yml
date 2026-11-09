@@ -16,3 +16,4 @@ jobs:
       - run: cargo test --locked
       - run: python3 tests/e2e.py
       - run: python3 -m unittest discover -s tests -p 'test_*.py'
+      - run: python3 tests/plugin_e2e.py

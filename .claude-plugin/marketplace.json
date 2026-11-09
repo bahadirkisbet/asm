@@ -1,0 +1,8 @@
+{
+  "name": "bahadir-plugins",
+  "owner": { "name": "Bahadir Kisbet" },
+  "metadata": { "description": "Bahadir's local development tools for AI agents." },
+  "plugins": [
+    { "name": "asm", "source": "./plugins/asm", "description": "Capture and deliver secrets without plaintext tool responses." }
+  ]
+}

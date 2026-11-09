@@ -1,0 +1,20 @@
+{
+  "Darwin-arm64": {
+    "file": "asm-Darwin-arm64",
+    "sha256": "07f600dc05db758db7e45c66653502229ca064fe58a866bd0ff30ece58f0a325",
+    "source_commit": "fc78a8631299f2741f07c8d913bf36327a68fd28",
+    "version": "asm 0.1.1"
+  },
+  "Darwin-x86_64": {
+    "file": "asm-Darwin-x86_64",
+    "sha256": "5c6926f0e6e24f063c7173792cd1ee024f8e8d8a66227a3e5ac0807e390e9326",
+    "source_commit": "fc78a8631299f2741f07c8d913bf36327a68fd28",
+    "version": "asm 0.1.1"
+  },
+  "Linux-x86_64": {
+    "file": "asm-Linux-x86_64",
+    "sha256": "0092ca40d862e94063e9bc086c44ca19c3e3be67d0d615f180765ec617917ad1",
+    "source_commit": "fc78a8631299f2741f07c8d913bf36327a68fd28",
+    "version": "asm 0.1.1"
+  }
+}

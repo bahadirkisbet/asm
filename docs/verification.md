@@ -43,6 +43,24 @@ also passed.
   MCP health check connected; Codex's native parser recognized the enabled entry.
 - No model-driven production setup was run.
 
+## Private Git marketplace — 2026-11-09
+
+- Native builds for macOS arm64, macOS x86_64 and Linux x86_64 passed Rust tests
+  and release-binary MCP exchange tests in [workflow 42583128196](https://github.com/bahadirkisbet/asm/actions/runs/42583128196).
+  Bundled binaries identify source `fc78a8631299f2741f07c8d913bf36327a68fd28`;
+  packaging verifies source, version and SHA-256 before copying any artifact.
+- Nineteen Python unit tests cover both installers, configuration preservation,
+  private backups, idempotency, preflight conflicts, legacy policy preservation,
+  user scope, launcher integrity checks and artifact provenance.
+- `python3 tests/plugin_e2e.py` passed from a relocated plugin directory containing
+  spaces, using the bundled binary: both MCP protocols, all exchange adapters,
+  real Chrome capture/delivery, error/no-leak checks and CLI status contracts.
+- Claude's native plugin and marketplace validators passed. The optional public
+  directory icon warning remains; this is a private Git marketplace.
+- Independent packaging/migration review found no remaining Critical or Important
+  code findings after regression-tested fixes for scoped installs and legacy
+  permission/hook rules.
+
 ## Remaining limits
 
 No production account/provider workflows were exercised. Native Codex verification

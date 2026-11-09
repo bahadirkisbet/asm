@@ -1,0 +1,29 @@
+# Releasing the private Git marketplace
+
+The source repository and marketplace share `bahadirkisbet/asm`. Both catalogs
+point to `plugins/asm`. Never put user config, credentials, backups or caches in
+the plugin folder. Only the demo config is packaged.
+
+1. Set matching versions in Cargo.toml and both plugin.json manifests; update
+   Cargo.lock. Commit the source being built.
+2. Dispatch `.github/workflows/plugin-binaries.yml` on that commit. It runs Rust
+   tests and the release binary through MCP fixtures on macOS arm64, macOS Intel
+   and Linux x86_64. Require all jobs to pass.
+3. Download all three artifacts into a scratch directory, then run:
+
+   ```sh
+   python3 scripts/package_plugin.py target/plugin-artifacts --source-commit <built-sha>
+   ```
+
+   This verifies artifact versions, checksums and source identity before copying.
+   It copies the demo config and license into the self-contained plugin.
+4. Run repository checks, `python3 tests/plugin_e2e.py`,
+   `claude plugin validate plugins/asm`, and `claude plugin validate .`.
+5. Commit the plugin package and updated catalogs. Check the pushed commit's CI.
+   Native binaries are deliberately tracked for offline startup/private Git
+   distribution; Git history grows with binary updates.
+6. Test installing from the **Git URL** in each native client, inspect the loaded
+   skill/MCP inventory, and verify catalog access from the installed cache.
+
+An icon is optional for this private marketplace. Public-directory submission,
+publisher signing/notarization, Windows and Linux arm64 are outside this release.
