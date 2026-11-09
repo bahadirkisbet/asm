@@ -75,6 +75,34 @@ also passed.
 - Independent artifact review verified all three hashes, executable permissions,
   source/version records, config/license inclusion and relocated package E2E.
 
+## Bardak migration — 2026-11-09
+
+- Public marketplace: `bahadirkisbet/bardak` commit `9ffe111`, containing only
+  a catalog entry and installation documentation for ASM. The existing bardak
+  plugin definition and skills are unchanged. The entry pins the private ASM
+  package at `2242698d928be85bcdb4a7d927cdb8852a2efba8`.
+- Both real clients installed `asm@bardak` 0.1.1 from the published Git catalog
+  using its `git-subdir` SSH source. Every tracked package file in each installed
+  cache matches the private source package byte-for-byte. A repeated installer
+  run passed without duplicate registration.
+- Claude's native MCP health check connected and its inventory found the skill
+  and server. A fresh Codex app-server session loaded exactly one ASM server,
+  both tools and enabled `asm:secrets`; a native catalog call returned the
+  existing definitions successfully.
+- The temporary `asm@bahadir-plugins` installations and `bahadir-plugins`
+  marketplace registrations were removed only after both replacement bundles
+  and existing configs validated. User operations are byte-identical. Unrelated
+  client settings are preserved; Claude runtime counters/feature caches changed
+  during the session and were excluded from the settings comparison.
+- This machine has an exact-repository Git URL rewrite from the standard ASM
+  SSH URL to its existing personal SSH alias. Other repository URLs and the
+  globally active GitHub account were not changed. A private Git config backup
+  was made before adding the mapping; future plugin updates can use the same
+  authenticated source without command-specific environment overrides.
+- Twenty Python tests and independent review passed. The pinned package/source
+  commit passed [CI run 42585622368](https://github.com/bahadirkisbet/asm/actions/runs/42585622368),
+  including Rust checks and both source and relocated-plugin MCP/browser E2E.
+
 ## Remaining limits
 
 No production account/provider workflows or model-driven setup tasks were
