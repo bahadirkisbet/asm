@@ -118,6 +118,15 @@ also passed.
   Bundle hashes and versions identify source
   `76b0f0d2b88e5a4fc6155aa77261f9524aa17d17`. The packaged demo validates with its
   new development label. Independent source and artifact reviews passed.
+- Release commit `b6d99ec` passed [CI run 42592999101](https://github.com/bahadirkisbet/asm/actions/runs/42592999101).
+  Bardak commit `485c217` pins that package at version 0.1.2. Both real clients
+  updated from the published catalog and validated the existing user config.
+  Claude's native MCP health check connected; a native Codex app-server catalog
+  call returned environment fields, with old unspecified labels explicitly null.
+- Separate MCP sessions launched from both installed caches verified a labeled
+  demo catalog and generation outcome in ephemeral storage. User operations
+  config remained byte-identical after both updates; no real credentials were
+  created or relabeled for this feature's live checks.
 - Labels are trusted configuration metadata, not provider-side verification or
   an environment authorization boundary. Existing user labels are never guessed.
 
