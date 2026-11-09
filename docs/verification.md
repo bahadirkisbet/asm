@@ -60,12 +60,26 @@ also passed.
 - Independent packaging/migration review found no remaining Critical or Important
   code findings after regression-tested fixes for scoped installs and legacy
   permission/hook rules.
+- Installed `asm@bahadir-plugins` version 0.1.1 in both real clients from the
+  private Git URL `git@personal:bahadirkisbet/asm.git`, then reran the migration
+  successfully to verify idempotency. Both managed direct-MCP definitions are
+  absent. Parsed before/after settings are identical excluding ASM plugin,
+  marketplace and legacy registration entries; operations config is byte-identical.
+- Claude's plugin inventory contains the `secrets` skill and ASM MCP server;
+  `claude mcp get plugin:asm:asm` reports Connected.
+- A fresh Codex app-server session loaded exactly one ASM server with
+  `asm_catalog` and `asm_execute`, plus enabled `asm:secrets`. Its native
+  `mcpServer/tool/call` API successfully called `asm_catalog` and returned the
+  existing one-secret/two-operation catalog. This was a read-only catalog call
+  through the installed plugin, without a model turn or credential mutation.
+- Independent artifact review verified all three hashes, executable permissions,
+  source/version records, config/license inclusion and relocated package E2E.
 
 ## Remaining limits
 
-No production account/provider workflows were exercised. Native Codex verification
-is config-level plus independent MCP wire tests, not a model-driven tool call.
-Claude verification is native health/handshake, not a model-driven setup task.
+No production account/provider workflows or model-driven setup tasks were
+exercised. Native Codex verification includes an app-server catalog tool call;
+Claude verification is native health/handshake and plugin component inventory.
 Linux Keyring persistence needs an unlocked Secret Service and has not been
 tested locally. Browser coverage uses a real Chrome instance and a local synthetic
 provider, not arbitrary third-party sites. No independent cryptographic audit,
