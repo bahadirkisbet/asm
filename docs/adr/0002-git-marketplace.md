@@ -1,6 +1,6 @@
 # 0002. Self-contained plugin in the private Git marketplace
 
-- Status: accepted
+- Status: distribution location superseded by [0003](0003-bardak-marketplace.md); bundle design retained
 - Date: 2026-11-09
 
 ## Context

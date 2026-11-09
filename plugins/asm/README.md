@@ -3,13 +3,16 @@
 Agentic Secret Manager captures, generates and delivers credentials locally,
 returning references and safe status instead of secret values.
 
-Install `asm@bahadir-plugins` from the private `bahadirkisbet/asm` Git marketplace
+Install `asm@bardak` from the public `bahadirkisbet/bardak` Git marketplace
 using Claude Code or Codex. This directory is self-contained: client manifests,
 MCP definitions, a `secrets` skill, Python launcher, and native binaries.
 
 ```sh
-claude plugin install asm --marketplace bahadirkisbet/asm
+claude plugin install asm --marketplace bahadirkisbet/bardak
 ```
+
+The catalog is public; the package stays in the private `bahadirkisbet/asm`
+repository. SSH access to that repository is required for installation.
 
 Python 3.9+ is required. Supported bundles: macOS arm64, macOS x86_64, Linux x86_64
 (Ubuntu 22.04+ with libdbus and Secret Service). Rust and network downloads are

@@ -9,7 +9,7 @@ import sys
 
 from install import InstallError, backup, existing_entry, matching, read_config, run
 
-MARKETPLACE = "bahadir-plugins"
+MARKETPLACE = "bardak"
 PLUGIN = "asm@" + MARKETPLACE
 
 
@@ -87,6 +87,8 @@ def install_plugins(clients, source, *, home=None, environ=None, runner=run, whi
             runner([client, "plugin", "marketplace", "add", source], cwd=home)
         state = installed(client, runner)
         if state is None:
+            if market is not None:
+                runner([client, "plugin", "marketplace", "update" if client == "claude" else "upgrade", MARKETPLACE], cwd=home)
             args = [client, "plugin", "install" if client == "claude" else "add", PLUGIN]
             if client == "claude":
                 args += ["--scope", "user"]
@@ -121,7 +123,7 @@ def install_plugins(clients, source, *, home=None, environ=None, runner=run, whi
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Install ASM from its GitHub plugin marketplace")
     parser.add_argument("--client", choices=["both", "claude", "codex"], default="both")
-    parser.add_argument("--source", default="bahadirkisbet/asm", help="Git marketplace source; use your SSH alias for private repository access")
+    parser.add_argument("--source", default="bahadirkisbet/bardak", help="Git marketplace source; use your SSH alias for private repository access")
     args = parser.parse_args()
     try:
         install_plugins(["claude", "codex"] if args.client == "both" else [args.client], args.source)

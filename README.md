@@ -11,8 +11,9 @@ not a sandbox for hostile agents. Read [the security boundary](SECURITY.md).
 
 ### GitHub marketplace (recommended)
 
-The private GitHub repository is also the **Bahadir Plugins** marketplace.
-Git access to `bahadirkisbet/asm` is required. The package contains native binaries
+ASM is listed in the public **bardak** marketplace (`bahadirkisbet/bardak`).
+Only the catalog entry is public; it points to a pinned commit in the private
+`bahadirkisbet/asm` repository. Git access to that repository is required. The package contains native binaries
 for macOS Apple Silicon, macOS Intel, and Linux x86_64 (Ubuntu 22.04+). Runtime
 requirements: Python 3.9+; Linux also needs `libdbus-1-3` and an unlocked Secret
 Service. No Rust compiler or startup download is needed.
@@ -20,30 +21,30 @@ Service. No Rust compiler or startup download is needed.
 Claude Code:
 
 ```sh
-claude plugin marketplace add bahadirkisbet/asm
-claude plugin install asm@bahadir-plugins
+claude plugin marketplace add bahadirkisbet/bardak
+claude plugin install asm@bardak
 ```
 
 Codex:
 
 ```sh
-codex plugin marketplace add bahadirkisbet/asm
-codex plugin add asm@bahadir-plugins
+codex plugin marketplace add bahadirkisbet/bardak
+codex plugin add asm@bardak
 ```
 
-Use an SSH URL instead of the repository shorthand if that's how your GitHub
-access is configured. On the owner's machine, for example, the authenticated
-personal alias is `git@personal:bahadirkisbet/asm.git`; other users should use
-their own Git authentication. The repository remains private.
+The catalog fetches ASM through `git@github.com:bahadirkisbet/asm.git`.
+Configure your SSH identity with access to that private repository before
+installing. The public marketplace does not grant access to ASM.
 
 **Existing direct-MCP installation:** from this checkout, use the migration
 helper instead of the commands above:
 
 ```sh
-python3 scripts/install_plugin.py --source git@personal:bahadirkisbet/asm.git
+python3 scripts/install_plugin.py
 ```
 
-It installs into both clients, validates each installed binary/config, then
+It refreshes an existing bardak catalog when needed, installs into both clients,
+validates each installed binary/config, then
 removes only the known ASM legacy MCP definition. It preserves operations,
 credentials and unrelated settings, and makes private backups. Conflicting
 custom registrations and legacy ASM-specific user/current-project permission or
@@ -60,8 +61,8 @@ it does not grant new provider permissions or intercept other tools.
 
 Update from the same Git source with the clients' native marketplace/plugin
 update commands. Both clients cache versioned packages; restart sessions after
-updates. Uninstall with `claude plugin uninstall asm@bahadir-plugins` or
-`codex plugin remove asm@bahadir-plugins`. User operations and OS credentials are
+updates. Uninstall with `claude plugin uninstall asm@bardak` or
+`codex plugin remove asm@bardak`. User operations and OS credentials are
 outside the plugin cache and remain intact.
 
 ### Source-based direct MCP installation

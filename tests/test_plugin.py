@@ -106,7 +106,7 @@ class MigrationTests(unittest.TestCase):
         if args[1:4] == ["plugin","marketplace","list"]:
             return json.dumps(self.markets[client] if client=="claude" else {"marketplaces":self.markets[client]})
         if args[1:4] == ["plugin","marketplace","add"]:
-            self.markets[client] = [{"name":"bahadir-plugins", "repo":args[4], "marketplaceSource":{"source":args[4]}}]
+            self.markets[client] = [{"name":"bardak", "repo":args[4], "marketplaceSource":{"source":args[4]}}]
         elif args[1:3] == ["plugin","list"]:
             return json.dumps(self.plugins[client] if client=="claude" else {"installed":self.plugins[client]})
         elif args[1:3] in [["plugin","install"],["plugin","add"]]:
@@ -123,7 +123,7 @@ class MigrationTests(unittest.TestCase):
         return ""
 
     def install(self):
-        install_plugin.install_plugins(["claude","codex"],"bahadirkisbet/asm",home=self.home,environ={},runner=self.runner,which=lambda _:"/found")
+        install_plugin.install_plugins(["claude","codex"],"bahadirkisbet/bardak",home=self.home,environ={},runner=self.runner,which=lambda _:"/found")
 
     def test_migration_preserves_settings_and_is_idempotent(self):
         self.install()
@@ -139,6 +139,15 @@ class MigrationTests(unittest.TestCase):
         self.assertIn("asm",json.loads((self.home/'.claude.json').read_text())["mcpServers"])
         self.assertFalse(any(c[1:3]==["mcp","remove"] for c in self.calls))
 
+    def test_existing_marketplace_is_refreshed_before_install(self):
+        self.markets['claude']=[{"name":"bardak","repo":"bahadirkisbet/bardak"}]
+        self.markets['codex']=[{"name":"bardak","marketplaceSource":{"source":"https://github.com/bahadirkisbet/bardak.git"}}]
+        self.install()
+        for client, refresh, install in [('claude','update','install'),('codex','upgrade','add')]:
+            refresh_index=self.calls.index([client,'plugin','marketplace',refresh,'bardak'])
+            install_index=next(i for i,c in enumerate(self.calls) if c[:3]==[client,'plugin',install])
+            self.assertLess(refresh_index,install_index)
+
     def test_custom_legacy_entry_stops_all_mutations(self):
         self.legacy['args']=['custom']
         (self.home/'.claude.json').write_text(json.dumps({"mcpServers":{"asm":self.legacy}}))
@@ -152,11 +161,11 @@ class MigrationTests(unittest.TestCase):
                 raise install_plugin.InstallError("bundle_invalid")
             return runner(args, **kwargs)
         with self.assertRaises(install_plugin.InstallError):
-            install_plugin.install_plugins(["claude"],"bahadirkisbet/asm",home=self.home,environ={},runner=fail_prepare,which=lambda _:"/found")
+            install_plugin.install_plugins(["claude"],"bahadirkisbet/bardak",home=self.home,environ={},runner=fail_prepare,which=lambda _:"/found")
         self.assertIn("asm",json.loads((self.home/'.claude.json').read_text())["mcpServers"])
 
     def test_marketplace_source_conflict_stops_all_mutations(self):
-        self.markets['codex']=[{"name":"bahadir-plugins","marketplaceSource":{"source":"https://example.com/other.git"}}]
+        self.markets['codex']=[{"name":"bardak","marketplaceSource":{"source":"https://example.com/other.git"}}]
         with self.assertRaises(install_plugin.InstallError): self.install()
         self.assertTrue(all(c[1:4]==["plugin","marketplace","list"] for c in self.calls))
 
