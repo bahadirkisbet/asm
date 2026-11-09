@@ -12,8 +12,9 @@ not a sandbox for hostile agents. Read [the security boundary](SECURITY.md).
 ### GitHub marketplace (recommended)
 
 ASM is listed in the public **bardak** marketplace (`bahadirkisbet/bardak`).
-Only the catalog entry is public; it points to a pinned commit in the private
-`bahadirkisbet/asm` repository. Git access to that repository is required. The package contains native binaries
+The catalog points to a pinned commit in the public
+[`bahadirkisbet/asm`](https://github.com/bahadirkisbet/asm) repository.
+The package contains native binaries
 for macOS Apple Silicon, macOS Intel, and Linux x86_64 (Ubuntu 22.04+). Runtime
 requirements: Python 3.9+; Linux also needs `libdbus-1-3` and an unlocked Secret
 Service. No Rust compiler or startup download is needed.
@@ -32,9 +33,8 @@ codex plugin marketplace add bahadirkisbet/bardak
 codex plugin add asm@bardak
 ```
 
-The catalog fetches ASM through `git@github.com:bahadirkisbet/asm.git`.
-Configure your SSH identity with access to that private repository before
-installing. The public marketplace does not grant access to ASM.
+The catalog fetches ASM over HTTPS; installation needs no GitHub account or SSH
+key. Existing marketplace users should refresh the catalog before installing.
 
 **Existing direct-MCP installation:** from this checkout, use the migration
 helper instead of the commands above:
