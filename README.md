@@ -9,6 +9,41 @@ not a sandbox for hostile agents. Read [the security boundary](SECURITY.md).
 
 ## Install and try
 
+From the cloned repository, one command builds ASM and registers it in **both
+Claude Code and Codex** for your user:
+
+```sh
+python3 scripts/install.py
+```
+
+Requires Python 3.11+, Rust/Cargo and both client CLIs on PATH. Use
+`--client claude` or `--client codex` to install for only one client. No manual
+JSON/TOML editing or executable paths are needed. Restart existing client
+sessions after installation and ask the agent to call `asm_catalog`.
+
+The installer puts the binary in `~/.local/share/asm/bin/asm`, creates the demo
+operations at `~/.config/asm/operations.json` if absent, and uses the clients'
+native MCP registration commands. Existing configurations are preserved and
+client settings are backed up privately under `~/.local/share/asm/backups`.
+Repeat the command to rebuild/update the binary without duplicating registrations.
+An existing, different `asm` registration is a conflict and is never overwritten.
+If one client fails after the other succeeds, the successful registration stays;
+fix the failure and rerun. Unrelated client settings and tool approval policies
+are not intentionally changed. Avoid editing settings concurrently with installation.
+
+For your own operations, pass `--config /path/to/operations.json` on first install.
+The starter config only generates and checks a demo key; it does not discover
+production credentials or authorize provider setup automatically.
+
+To disconnect the integrations later (stored secrets remain intact):
+
+```sh
+claude mcp remove --scope user asm
+codex mcp remove asm
+```
+
+For a standalone CLI installation instead:
+
 ```sh
 cargo install --path . --locked
 asm --config examples/demo.json check

@@ -31,7 +31,19 @@ changed nonempty value after a click. Independent re-review passed with no
 remaining Critical or Important findings. Formatting and strict Clippy checks
 also passed.
 
-## Limits
+## One-command installer — 2026-11-09
+
+- Seven installer tests cover preservation, private backups, idempotency,
+  conflicting/malformed entries, missing clients, partial registration failure,
+  existing operations and custom parent-directory permissions.
+- Independent installer review passed after correcting parent-directory permission
+  handling. Rust formatting/Clippy/tests and full MCP/browser E2E also passed.
+- Live installation registered ASM in both native clients. Parsed client settings
+  before/after were identical after excluding the new ASM entries. Claude's live
+  MCP health check connected; Codex's native parser recognized the enabled entry.
+- No model-driven production setup was run.
+
+## Remaining limits
 
 No production account/provider workflows were exercised. Native Codex verification
 is config-level plus independent MCP wire tests, not a model-driven tool call.
