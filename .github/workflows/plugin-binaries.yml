@@ -32,6 +32,7 @@ jobs:
           e2e.BINARY = Path('target/release/asm').resolve()
           e2e.run(skip_browser=True)
           PY
+      - run: python3 examples/run.py all --binary target/release/asm
       - name: Stage binary with build provenance
         env:
           ASM_ARTIFACT: ${{ matrix.artifact }}

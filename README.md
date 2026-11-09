@@ -1,5 +1,7 @@
 # ASM — Agentic Secret Manager
 
+<img src="plugins/asm/assets/logo.png" alt="ASM: a protected passage around three hidden-secret dots" width="120" />
+
 Let Claude Code and Codex complete authorized setup without asking a human to
 copy credentials into chat. ASM captures and delivers values locally. The agent
 receives references and status, never the captured data.
@@ -8,6 +10,17 @@ receives references and status, never the captured data.
 not a sandbox for hostile agents. Read [the security boundary](SECURITY.md).
 
 ## Install and try
+
+Try three working local workflows without accounts or real credentials:
+
+```sh
+python3 examples/run.py all
+```
+
+The examples cover **file → private file**, **issuing CLI → child environment**,
+and **HTTP token endpoint → authenticated request**. They use the bundled ASM
+runtime with ephemeral storage, verify delivery, and clean up temporary resources.
+See [runnable examples](examples/README.md) for individual commands and configs.
 
 ### GitHub marketplace (recommended)
 
@@ -56,6 +69,8 @@ Restart sessions after installation. Ask for the ASM catalog or invoke the
 bundled `secrets` skill. First startup creates a demo operations config only if
 `~/.config/asm/operations.json` does not exist. Existing config is preserved.
 Set `ASM_CONFIG` in the client process environment for a custom config path.
+The plugin also includes the same `examples/` directory and the ASM logo.
+Run `python3 examples/run.py all` from its installed directory to try it.
 The plugin skill explains routing, reference semantics and safe error handling;
 it does not grant new provider permissions or intercept other tools.
 

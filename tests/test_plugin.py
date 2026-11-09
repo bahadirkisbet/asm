@@ -71,6 +71,8 @@ class PackageTests(unittest.TestCase):
             (plugin / '.codex-plugin/plugin.json').write_text('{"version":"0.1.1"}')
             (root / 'examples').mkdir()
             (root / 'examples/demo.json').write_text('{"demo":true}')
+            for name in ['README.md', 'run.py', 'provider.py', 'mcp_client.py']:
+                (root / 'examples' / name).write_text('example fixture')
             (root / 'LICENSE').write_text('fixture license')
             artifacts = root / 'artifacts'
             artifacts.mkdir()
@@ -84,6 +86,7 @@ class PackageTests(unittest.TestCase):
                 package_plugin.package(artifacts, 'expected')
             self.assertEqual(len(json.loads((plugin/'bin/manifest.json').read_text())),3)
             self.assertEqual((plugin/'config/demo.json').read_text(),'{"demo":true}')
+            self.assertEqual((plugin/'examples/run.py').read_text(),'example fixture')
 
 
 class MigrationTests(unittest.TestCase):

@@ -46,6 +46,10 @@ def package(artifacts, source_commit):
     (plugin / "config").mkdir(exist_ok=True)
     shutil.copyfile(ROOT / "examples/demo.json", plugin / "config/demo.json")
     shutil.copyfile(ROOT / "LICENSE", plugin / "LICENSE")
+    examples = plugin / "examples"
+    examples.mkdir(exist_ok=True)
+    for name in ["README.md", "run.py", "provider.py", "mcp_client.py"]:
+        shutil.copyfile(ROOT / "examples" / name, examples / name)
     print("Packaged three native binaries with pinned checksums and source commit")
 
 

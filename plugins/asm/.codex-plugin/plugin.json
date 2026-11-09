@@ -1,6 +1,6 @@
 {
   "name": "asm",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Agentic Secret Manager: capture, generate and deliver secrets using references instead of plaintext tool responses.",
   "author": { "name": "Bahadir Kisbet", "url": "https://github.com/bahadirkisbet" },
   "repository": "https://github.com/bahadirkisbet/asm",
@@ -11,6 +11,10 @@
     "displayName": "ASM — Agentic Secret Manager",
     "shortDescription": "Use secrets without copying them into chat",
     "developerName": "Bahadir Kisbet",
+    "logo": "./assets/logo.png",
+    "logoDark": "./assets/logo.png",
+    "composerIcon": "./assets/logo.png",
+    "brandColor": "#29EFC0",
     "category": "Developer Tools",
     "capabilities": ["MCP", "Skills"]
   }

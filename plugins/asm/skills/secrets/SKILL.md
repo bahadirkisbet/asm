@@ -14,6 +14,11 @@ Compare the configured label with the intended task; resolve ambiguity from
 trusted project context before use. The label does not isolate storage or enforce
 destination matching. Use distinct namespaces/names for distinct credentials.
 
+For working demos, run `python3 <plugin-root>/examples/run.py all`; see the
+package's `examples/README.md` for individual file, CLI and HTTP workflows.
+The runner uses synthetic credentials and ephemeral storage, verifies delivery,
+and prints safe results only. Do not invoke `examples/provider.py issue` directly.
+
 Before an operation, read its definition in the trusted operations configuration:
 `~/.config/asm/operations.json`, unless the user configured `ASM_CONFIG`. Check
 the intended provider, environment and side effects against the user's task.

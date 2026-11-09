@@ -1,5 +1,7 @@
 # ASM plugin
 
+<img src="assets/logo.png" alt="ASM logo" width="120" />
+
 Agentic Secret Manager captures, generates and delivers credentials locally,
 returning references and safe status instead of secret values.
 
@@ -27,6 +29,10 @@ Tools: `asm_catalog` lists definitions; `asm_execute` runs a named authorized
 operation. First launch creates demo definitions if no config exists. Configure
 your own operations before real provider setup. Never put values in descriptions,
 operation arguments or metadata. See the source repository README for the schema.
+
+Try the bundled [working examples](examples/README.md) from this directory:
+`python3 examples/run.py all`. They exercise file, CLI and HTTP exchange using
+synthetic data and an ephemeral store, with no real account or Keychain writes.
 
 This broker does not sandbox same-user code, intercept other tools, bypass MFA,
 or prevent a receiving application from logging a value. Keep secret-bearing
