@@ -69,5 +69,3 @@ def assert_clean(transcript, values):
     for value in values:
         for representation in [value, json.dumps(value)[1:-1], base64.b64encode(value.encode()).decode()]:
             assert representation not in text, "Secret leaked into agent-visible output"
-
-

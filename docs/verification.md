@@ -130,6 +130,31 @@ also passed.
 - Labels are trusted configuration metadata, not provider-side verification or
   an environment authorization boundary. Existing user labels are never guessed.
 
+## Runnable examples and logo, version 0.1.3 — 2026-11-09
+
+- `python3 examples/run.py all` verifies file-to-file delivery and mode 0600,
+  issuing-CLI-to-child-environment authentication, and a local HTTP token-to-Bearer
+  request flow. All use synthetic credentials and ephemeral storage. Config
+  display contains no values; temporary files, processes and HTTP listeners are
+  scoped to the run. A failing fake MCP process proves raw stdout/stderr stays
+  hidden and temporary resources are removed.
+- Nine Rust tests, 21 Python tests, formatting/Clippy and full MCP/browser E2E
+  passed. The existing MCP test client is shared with the examples. Native
+  [workflow 42607558653](https://github.com/bahadirkisbet/asm/actions/runs/42607558653)
+  passed on all three platforms, including the new examples, for source
+  `1eaae7b484e42494287c9513111886aa245cf2a4`.
+- The final relocated package passed all MCP/browser scenarios and all three
+  bundled examples from a directory containing spaces, without the source
+  checkout. Independent source and final artifact reviews passed.
+- The generated logo is a 1254 × 1254 PNG, 1,187,936 bytes, copied unchanged into
+  `plugins/asm/assets/logo.png`. Claude plugin validation passed with no icon
+  warning. Codex's native `plugin/read` resolved both logo and composer icon from
+  a temporary local marketplace; no installed plugins/configuration were changed
+  by that parser check. See [branding provenance and prompt](branding.md).
+- At this checkpoint, the 0.1.3 package is prepared locally. Main/marketplace
+  publication and installed-client updates are pending clarification of the
+  concurrent public-repository change versus the earlier private-package request.
+
 ## Remaining limits
 
 No production account/provider workflows or model-driven setup tasks were

@@ -56,7 +56,7 @@ provider accepts the same commands, response fields or authentication method.
 
 ## Development checks
 
-Use a freshly built source binary explicitly:
+From a source checkout, use a freshly built binary explicitly:
 
 ```sh
 cargo build --locked

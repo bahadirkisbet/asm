@@ -7,7 +7,7 @@ it remains usable at small sizes. The generated PNG is 1254 × 1254 and under
 
 Asset: `plugins/asm/assets/logo.png`. Created with the built-in `image_gen` tool;
 the original generated file was copied unchanged into the project. This is a
-raster asset, not an editable vector master. No trademark clearance was performed.
+raster asset, not an editable vector master.
 
 ## Generation prompt
 
