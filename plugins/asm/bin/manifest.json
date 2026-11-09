@@ -1,20 +1,20 @@
 {
   "Darwin-arm64": {
     "file": "asm-Darwin-arm64",
-    "sha256": "07f600dc05db758db7e45c66653502229ca064fe58a866bd0ff30ece58f0a325",
-    "source_commit": "fc78a8631299f2741f07c8d913bf36327a68fd28",
-    "version": "asm 0.1.1"
+    "sha256": "738aaaf26ad97b139c3f83be71f0c62d02cabbd6ec5c2974c8706b406cbf5317",
+    "source_commit": "76b0f0d2b88e5a4fc6155aa77261f9524aa17d17",
+    "version": "asm 0.1.2"
   },
   "Darwin-x86_64": {
     "file": "asm-Darwin-x86_64",
-    "sha256": "5c6926f0e6e24f063c7173792cd1ee024f8e8d8a66227a3e5ac0807e390e9326",
-    "source_commit": "fc78a8631299f2741f07c8d913bf36327a68fd28",
-    "version": "asm 0.1.1"
+    "sha256": "b5d5e951bfe168979600eb4adfd830a6ebcc366014958c9fdfff760ea606f8ad",
+    "source_commit": "76b0f0d2b88e5a4fc6155aa77261f9524aa17d17",
+    "version": "asm 0.1.2"
   },
   "Linux-x86_64": {
     "file": "asm-Linux-x86_64",
-    "sha256": "0092ca40d862e94063e9bc086c44ca19c3e3be67d0d615f180765ec617917ad1",
-    "source_commit": "fc78a8631299f2741f07c8d913bf36327a68fd28",
-    "version": "asm 0.1.1"
+    "sha256": "d2e5e8a57dc2b7c6d08cfa375c486150e568d6b314642afa2d1d39118016966e",
+    "source_commit": "76b0f0d2b88e5a4fc6155aa77261f9524aa17d17",
+    "version": "asm 0.1.2"
   }
 }

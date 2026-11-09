@@ -1,7 +1,7 @@
 {
   "namespace": "asm-demo",
   "secrets": {
-    "session-key": { "description": "Locally generated demo session key" }
+    "session-key": { "description": "Locally generated demo session key", "environment": "development" }
   },
   "operations": {
     "generate-session-key": {

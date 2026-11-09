@@ -103,6 +103,24 @@ also passed.
   commit passed [CI run 42585622368](https://github.com/bahadirkisbet/asm/actions/runs/42585622368),
   including Rust checks and both source and relocated-plugin MCP/browser E2E.
 
+## Environment metadata, version 0.1.2 — 2026-11-09
+
+- Nine Rust tests pass, including label validation, omitted/null compatibility,
+  and adding a label after storage without changing credential lookup/reference.
+  Twenty Python installer/packaging tests also pass.
+- Source and relocated-plugin E2E verify different environments in the same
+  catalog, explicit nulls for older definitions, environment metadata in capture,
+  generation and delivery results, and CLI catalog output. Both MCP protocol
+  versions and the real Chrome fixture pass; tool inputs still accept only the
+  operation name, and credential sentinels remain absent from outputs.
+- All three 0.1.2 binaries passed native Rust/release-MCP tests in
+  [workflow 42591893943](https://github.com/bahadirkisbet/asm/actions/runs/42591893943).
+  Bundle hashes and versions identify source
+  `76b0f0d2b88e5a4fc6155aa77261f9524aa17d17`. The packaged demo validates with its
+  new development label. Independent source and artifact reviews passed.
+- Labels are trusted configuration metadata, not provider-side verification or
+  an environment authorization boundary. Existing user labels are never guessed.
+
 ## Remaining limits
 
 No production account/provider workflows or model-driven setup tasks were
